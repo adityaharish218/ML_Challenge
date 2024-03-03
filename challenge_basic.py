@@ -9,7 +9,7 @@ where appropriate, but don't stop here!
 
 import re
 import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
+#from sklearn.neighbors import KNeighborsClassifier
 
 file_name = "clean_dataset.csv"
 random_state = 42
@@ -70,10 +70,16 @@ if __name__ == "__main__":
     # Clean numerics
 
     df["Q7"] = df["Q7"].apply(to_numeric).fillna(0)
+    df["Q8"] = df["Q8"].apply(to_numeric).fillna(0)
+    df["Q9"] = df["Q9"].apply(to_numeric).fillna(0)
 
     # Clean for number categories
 
     df["Q1"] = df["Q1"].apply(get_number)
+    df["Q2"] = df["Q2"].apply(get_number)
+    df["Q3"] = df["Q3"].apply(get_number)
+    df["Q4"] = df["Q4"].apply(get_number)
+
 
     # Create area rank categories
 
@@ -90,7 +96,7 @@ if __name__ == "__main__":
     # Create category indicators
 
     new_names = []
-    for col in ["Q1"] + temp_names:
+    for col in ["Q1", "Q2", "Q3", "Q4"] + temp_names:
         indicators = pd.get_dummies(df[col], prefix=col)
         new_names.extend(indicators.columns)
         df = pd.concat([df, indicators], axis=1)
@@ -107,9 +113,9 @@ if __name__ == "__main__":
 
     # Prepare data for training - use a simple train/test split for now
 
-    df = df[new_names + ["Q7", "Label"]]
+    df = df[new_names + ["Q7", "Q8", "Q9", "Label"]]
 
-    df = df.sample(frac=1, random_state=random_state)
+    #df = df.sample(frac=1, random_state=random_state)
 
     x = df.drop("Label", axis=1).values
     y = pd.get_dummies(df["Label"].values)
@@ -121,13 +127,17 @@ if __name__ == "__main__":
 
     x_test = x[n_train:]
     y_test = y[n_train:]
+    # Print whole dataframe with all columns and rows output to a file
+    with open('output.csv', 'w') as f:
+        df.to_csv(f, header=True, index=False)
+
 
     # Train and evaluate classifiers
 
-    clf = KNeighborsClassifier(n_neighbors=3)
-    clf.fit(x_train, y_train)
-    train_acc = clf.score(x_train, y_train)
-    test_acc = clf.score(x_test, y_test)
-    print(f"{type(clf).__name__} train acc: {train_acc}")
-    print(f"{type(clf).__name__} test acc: {test_acc}")
+    # clf = KNeighborsClassifier(n_neighbors=3)
+    # clf.fit(x_train, y_train)
+    # train_acc = clf.score(x_train, y_train)
+    # test_acc = clf.score(x_test, y_test)
+    # print(f"{type(clf).__name__} train acc: {train_acc}")
+    # print(f"{type(clf).__name__} test acc: {test_acc}")
 
