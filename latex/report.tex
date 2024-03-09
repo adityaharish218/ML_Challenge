@@ -1,0 +1,104 @@
+\documentclass[12pt]{article} % 12pt font
+\usepackage[margin=0.75in]{geometry} % Set margin for document, 0.5 is large margins.
+%\usepackage{nopageno} % Remove page numbers on whole document
+
+% Getting rid of the overfull and underfull error messages.
+\hbadness=\maxdimen
+\hfuzz=\maxdimen
+\usepackage[dvipsnames]{xcolor} 
+\usepackage{color, colortbl}
+% Big List of Packages
+\usepackage{
+    amsmath,       % For useful mathematical symbols.
+    amssymb,       % For more useful mathematical symbols.
+    amsthm,        % Theorem and Proof Environments.
+    tcolorbox,     % Colored thm-like boxes.
+    graphicx,      % Importing pictures.
+    fancyhdr,      % Used to add headers to document.
+    mdframed,      % Adding outlined boxes.
+    color,         % Changing text color.
+    xcolor,        % Changing text color with adv. options.
+    tikz,          % Graphics in LaTeX.
+    enumitem,      % More control over enumerate environment.
+    ../BasicPack,  % My Custom Styling Pack.
+    hyperref,      % For hypertext links in document.
+    bookmark,      % More control over the bookmark outline (needs hyperref).
+    setspace,      % Custom spacing between lines.
+    verbatim,      % Code-like environments.
+    minted,        % Code-like environments with color.
+    % sfmath         % Sans-Serif but in math mode.
+    makeidx,       % Generate index page.
+    pagecolor,     % Change page color.
+    multicol,      % Create multiple columns in itemize env.
+    pseudo,        % Used to write psuedo code
+    fontawesome,   % fonts 
+    transparent,   % making stuff transparent
+    multirow,      % making multiple rows
+    ../quiver,         % generating diagrams
+    geometry,
+    parskip
+}
+% \usetikzlibrary{matrix}
+
+%	HREF Settings (Custom Colors Requires: xcolor)
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=lightDarkBlue
+}
+
+% Add bibliography/index/contents to TOC.
+\usepackage[nottoc]{tocbibind}
+
+% For bookmarks without appearance of section number.
+\makeatletter
+    \renewcommand\@seccntformat[1]{}
+\makeatother
+
+% Set Table of Contents Depth
+\setcounter{tocdepth}{3}
+
+% No indentation for the whole document
+\setlength{\parindent}{0pt}
+
+% Make nested itemize into bullet points as well.
+\renewcommand{\labelitemii}{\textbullet}
+
+% Change default enumerate style to (1), (2), (3), etc.
+\setenumerate{label=(\arabic*)}
+
+% Set standard spacing between lines.
+% \onehalfspacing
+
+% Change font to Sans-Serif.
+% \renewcommand*\familydefault{\sfdefault}
+
+% Graphics Path
+\graphicspath{{./images/}}
+
+% Change page color for whole document.
+\definecolor{BrightSideYellow}{HTML}{FAF395}
+% \pagecolor{BrightSideYellow}
+
+
+\pagestyle{fancy}
+\lhead{The Fuckers}
+\rhead{CSC311}
+\setlength{\headheight}{20pt}
+
+
+% Title
+\title{MAT257: Assignments}
+\author{Nimish Ray}
+\date{}
+
+\begin{document}
+ % replace this with your information
+
+\maketitle
+\tableofcontents
+\newpage
+
+
+
+\end{document}

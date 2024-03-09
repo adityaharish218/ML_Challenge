@@ -1,0 +1,168 @@
+% Blackboard Bold:
+\newcommand{\R}{\mathbb R}  % Real Numbers
+\newcommand{\real}{\mathbb R}  % Real Numbers
+\newcommand{\N}{\mathbb N}  % Natural Numbers
+\newcommand{\Z}{\mathbb Z}  % Integers
+\newcommand{\C}{\mathbb C}  % Complex Numbers
+\newcommand{\F}{\mathbb F}  % Field
+\newcommand{\Q}{\mathbb Q}  % Rational Numbers
+\newcommand{\M}{\mathbb M}  % Matrices
+\newcommand{\E}{\mathbb E}  % E
+\newcommand{\Null}{\text{N}}
+\newcommand{\ro}[1]{%
+  \xrightarrow{\mathmakebox[\rowidth]{#1}}%
+}
+
+
+\newcommand\inv[1]{#1\raisebox{1.15ex}{$\scriptscriptstyle-\!1$}}
+
+% Font Changes:
+\renewcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\mb}[1]{\mathbf{#1}}
+\newcommand{\func}[1]{\operatorname{#1}}
+\def\mc{\mathcal}
+
+% Common Operator Names:
+\newcommand{\im}{\operatorname{im}}      % Image
+\newcommand{\rank}{\operatorname{rank}}  % Rank
+\newcommand{\spn}{\operatorname{span}}  % Span
+\newcommand{\id}{\operatorname{id}}      % Identity
+\newcommand{\tr}{\operatorname{tr}}      % Trace
+\newcommand{\proj}{\operatorname{proj}}  % Projection
+\newcommand{\vol}{\operatorname{vol}}  % volume
+\DeclareMathOperator{\PP}{P}
+\DeclareMathOperator{\pp}{p}
+\DeclareMathOperator{\OO}{O}
+\DeclareMathOperator{\uu}{u}
+\DeclareMathOperator{\vv}{v}
+\DeclareMathOperator{\ww}{w}
+\DeclareMathOperator{\hh}{h}
+\DeclareMathOperator{\ii}{\mathbf{i}}
+\DeclareMathOperator{\jj}{\mathbf{j}}
+\DeclareMathOperator{\kk}{\mathbf{k}}
+
+
+\DeclareMathOperator{\xx}{x}
+\DeclareMathOperator{\yy}{y}
+\DeclareMathOperator{\0}{0}
+\DeclareMathOperator{\e}{\mathbf{e}}
+\DeclareMathOperator{\zz}{z}
+\DeclareMathOperator{\Mn}{\mathbf{\mathcal{M}_{n\times n}}(\F) }
+\DeclareMathOperator{\ips}{\big{(} V, \bra \cdot , \cdot \ket \big{)}}
+\DeclareMathOperator{\setn}{ \br 1, \ldots , n \cb }
+\DeclareMathOperator{\bra}{\langle}
+\DeclareMathOperator{\ket}{\rangle}
+\DeclareMathOperator{\br}{\big{ \{ }}
+\DeclareMathOperator{\cb}{\big{ \} }}
+\newcommand{\ds}{\displaystyle}
+\DeclareMathOperator{\Id}{I}
+
+% \newcommand{\iff}{\Longleftrightarrow}   %iff
+
+
+% Analysis / Set Theory Operator Names:
+\newcommand{\set}[1]{\left\{ #1 \right\}}   	 			                % Set
+\newcommand{\cl}{\operatorname{cl}}                           		        % Closure
+\newcommand{\inter}[1]{#1^{\operatorname{int}}}                         	% Interior
+\newcommand{\supp}{\operatorname{supp}}                                     % Support
+\newcommand{\eps}{\varepsilon}			                       	            % Epsilon
+\newcommand{\norm}[1]{\left\| #1 \right\|}                                  % Norm
+\newcommand{\normi}[2]{\displaystyle \left\| #1 \right\|_{#2}}     	        % Indexed Norm
+\newcommand{\innerp}[2]{\displaystyle \left\langle #1, #2 \right\rangle}    % Inner Product
+\newcommand{\bigparan}[1]{\displaystyle \left( #1 \right)}				    % Big Paranthesis
+\newcommand{\bigabs}[1]{\left| #1 \right|}                                  % Big Abs. Val Signs
+\newcommand{\scaleabs}[1]{\bigg| #1 \bigg|}                                 % Scale Abs. Val Signs
+\newcommand{\grad}{\operatorname{grad}}                                     % Gradient
+\newcommand{\diver}{\operatorname{div}}                                     % Divergence
+\newcommand{\curl}{\operatorname{curl}}                                     % Curl
+\newcommand{\dd}{\, d} 
+\newcommand{\dist}{\mathrm{dist}}                                           % dist
+\newcommand{\bvec}[1]{\mathbf{ #1 }}
+\newcommand{\bveci}[2]{\mathbf{ #1 }_{#2}}
+
+
+% Misc:
+\newcommand{\tand}{\text{ and }}      % "and" in math mode
+\newcommand{\st}{\text{ such that }}  % "such that" in math mode
+\newcommand{\tas}{\text{ as }}      % "as" in math mode
+\newcommand{\tor}{\text{ or }}      % "or" in math mode
+%   Custom Colors (Requires xcolor)
+\definecolor{peyBlue}{HTML}{0070C0}
+\definecolor{seaGreen}{RGB}{18,54.5,34.1}
+\definecolor{lightDarkBlue}{HTML}{1C84C8}
+
+% Inserts text into math environment. Automatically configured to use multiple rows. Optional alignment option.
+\providecommand{\comment}[2][r]{\text{\begin{tabular}{#1} #2 \end{tabular} }}
+\renewcommand{\comment}[2][r]{\text{\begin{tabular}{#1} #2 \end{tabular} }}
+
+% Custom Named Proof Environment:
+\newenvironment{myproof}[1][\proofname]{%
+  \begin{proof}[#1]$ $\par\nobreak\ignorespaces
+}{%
+  \end{proof}
+}
+\theoremstyle{lemma}
+\newtheorem*{lemma}{Lemma}
+% Solution Environment:
+\newcommand*{\soln}[1]{\subsubsection*{\color{red}#1}}
+\newcommand*{\solution}{\soln{Solution}}
+
+% Theorem Stylings:
+\newtheoremstyle{break}% name
+  {}%         Space above, empty = `usual value'
+  {}%         Space below
+  {\upshape}% Body font
+  {}%         Indent amount (empty = no indent, \parindent = para indent)
+  {\bfseries}% Thm head font
+  {.}%        Punctuation after thm head
+  {\newline}% Space after thm head: \newline = linebreak
+  {}%         Thm head spec
+\theoremstyle{break}
+
+% Red and black box environments, respectively...
+\newtcolorbox{redbox}{colback=red!5!white,colframe=red!75!black}
+\newtcolorbox{blackbox}{colback=black!3!white,colframe=black!75!white}
+
+% New color theorems
+% \newtcbtheorem[<init options>]{<name>}{<display name>}{<options>}{<prefix>}
+% \tcbuselibrary{theorems}
+% \newtcbtheorem[no counter]{thm}{Theorem}{          % Theorem
+%   colback=green!3!white,
+%   colframe=green!40!black,
+%   fonttitle=\bfseries
+%   }{thm}
+% \newtcbtheorem[no counter]{lemma}{Lemma}{          % Lemma
+%   colback=green!3!white,
+%   colframe=green!40!black,
+%   fonttitle=\bfseries
+%   }{lemma}
+% \newtcbtheorem[no counter]{prop}{Proposition}{     % Proposition
+%   colback=green!3!white,
+%   colframe=green!40!black,
+%   fonttitle=\bfseries
+%   }{prop}
+% \newtcbtheorem[no counter]{corollary}{Corollary}{  % Corollary
+%   colback=green!3!white,
+%   colframe=green!40!black,
+%   fonttitle=\bfseries
+%   }{corollary}
+% \newtcbtheorem[no counter]{defn}{Definition}{      % Definition
+%   colback=black!3!white,
+%   colframe=black!75!white,
+%   fonttitle=\bfseries
+%   }{defn}
+% \newtcbtheorem[no counter]{fact}{Fact}{            % Fact
+% colback=green!3!white,
+% colframe=green!40!black,
+% fonttitle=\bfseries
+% }{fact}
+% \newtcbtheorem[no counter]{concept}{Concept}{      % Concept
+% colback=green!3!white,
+% colframe=green!40!black,
+% fonttitle=\bfseries
+% }{fact}
+
+% Credits: Tyler Holden's "typack".
+% Inserts text into math environment. Automatically configured to use multiple rows. Optional alignment option.
+\providecommand{\textsubstack}[2][r]{\text{\begin{tabular}{#1} #2 \end{tabular} }}
+\renewcommand{\textsubstack}[2][r]{\text{\begin{tabular}{#1} #2 \end{tabular} }}
