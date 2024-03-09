@@ -11,7 +11,7 @@ import re
 import pandas as pd
 #from sklearn.neighbors import KNeighborsClassifier
 
-file_name = "clean_dataset.csv"
+file_name = "C:\\Users\\Aaditya\\Desktop\\University\\CSC311\\challenge\\ML_Challenge\\clean_dataset.csv"
 random_state = 42
 
 def to_numeric(s):
@@ -127,9 +127,6 @@ if __name__ == "__main__":
 
     x_test = x[n_train:]
     y_test = y[n_train:]
-    # Print whole dataframe with all columns and rows output to a file
-    with open('output.csv', 'w') as f:
-        df.to_csv(f, header=True, index=False)
 
 
     # Train and evaluate classifiers
@@ -141,3 +138,68 @@ if __name__ == "__main__":
     # print(f"{type(clf).__name__} train acc: {train_acc}")
     # print(f"{type(clf).__name__} test acc: {test_acc}")
 
+def get_data(file_name):
+    df = pd.read_csv(file_name)
+
+    # Clean numerics
+
+    df["Q7"] = df["Q7"].apply(to_numeric).fillna(0)
+    df["Q8"] = df["Q8"].apply(to_numeric).fillna(0)
+    df["Q9"] = df["Q9"].apply(to_numeric).fillna(0)
+
+    # Clean for number categories
+
+    df["Q1"] = df["Q1"].apply(get_number)
+    df["Q2"] = df["Q2"].apply(get_number)
+    df["Q3"] = df["Q3"].apply(get_number)
+    df["Q4"] = df["Q4"].apply(get_number)
+
+
+    # Create area rank categories
+
+    df["Q6"] = df["Q6"].apply(get_number_list_clean)
+
+    temp_names = []
+    for i in range(1,7):
+        col_name = f"rank_{i}"
+        temp_names.append(col_name)
+        df[col_name] = df["Q6"].apply(lambda l: find_area_at_rank(l, i))
+
+    del df["Q6"]
+
+    # Create category indicators
+
+    new_names = []
+    for col in ["Q1", "Q2", "Q3", "Q4"] + temp_names:
+        indicators = pd.get_dummies(df[col], prefix=col)
+        new_names.extend(indicators.columns)
+        df = pd.concat([df, indicators], axis=1)
+        del df[col]
+
+    # Create multi-category indicators
+
+    for cat in ["Partner", "Friends", "Siblings", "Co-worker"]:
+      cat_name = f"Q5{cat}"
+      new_names.append(cat_name)
+      df[cat_name] = df["Q5"].apply(lambda s: cat_in_s(s, cat))
+
+    del df["Q5"]
+
+    # Prepare data for training - use a simple train/test split for now
+
+    df = df[new_names + ["Q7", "Q8", "Q9", "Label"]]
+
+    #df = df.sample(frac=1, random_state=random_state)
+
+    x = df.drop("Label", axis=1).values
+    y = pd.get_dummies(df["Label"].values)
+
+    n_train = 1200
+
+    x_train = x[:n_train]
+    y_train = y[:n_train]
+
+    x_test = x[n_train:]
+    y_test = y[n_train:]
+
+    return x_train, y_train, x_test, y_test
