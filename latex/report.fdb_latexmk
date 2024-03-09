@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1710012097 "c:/csc311/ML_Challenge/latex/report.tex" "report.pdf" "report" 1710012100 0
+["pdflatex"] 1710012184 "c:/csc311/ML_Challenge/latex/report.tex" "report.pdf" "report" 1710012186 0
   "../BasicPack.sty" 1707277626 6686 46e8e38734e3344ba87edb63d3b2ff4b ""
   "../quiver.sty" 1694814435 1644 6ef543bbbd9caff5a40bffd73fca5ad8 ""
-  "c:/csc311/ML_Challenge/latex/report.tex" 1710012092 3015 20df4e71437cc22649c047228de88a5d ""
+  "c:/csc311/ML_Challenge/latex/report.tex" 1710012183 3025 a2e99ca82e51eeb96df2b921e18841d1 ""
   "c:/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1676862846 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1676861013 1004 54797486969f23fa377b128694d548df ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1676861013 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -204,9 +204,9 @@
   "c:/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1676867022 7879595 1769d42dc010b3208544beb99b929f98 ""
   "c:/texlive/2022/texmf.cnf" 1676866790 713 e69b156964470283e0530f5060668171 ""
   "nul" 0 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "report.aux" 1710012100 659 ac90cad788d4c7f783435fc6cd3c51fe "pdflatex"
-  "report.tex" 1710012092 3015 20df4e71437cc22649c047228de88a5d ""
-  "report.toc" 1710012099 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "report.aux" 1710012186 659 ac90cad788d4c7f783435fc6cd3c51fe "pdflatex"
+  "report.tex" 1710012183 3025 a2e99ca82e51eeb96df2b921e18841d1 ""
+  "report.toc" 1710012186 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   (generated)
   "report.aux"
   "report.log"
