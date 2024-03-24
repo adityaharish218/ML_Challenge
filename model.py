@@ -2,6 +2,7 @@ import random
 import numpy as np
 import pandas as pd
 from challenge_basic import get_data
+import sys
 
 x_train, t_train, x_test, t_test = None, None, None, None
 
@@ -18,7 +19,7 @@ def gen_input_output():
         `t` - an integer representing the target note
     """
     global x_train, t_train, x_test, t_test
-    file_name = "C:\\Users\\Aaditya\\Desktop\\University\\CSC311\\challenge\\ML_Challenge\\clean_dataset.csv"
+    file_name = "/Users/adityaharish/Documents/Documents/Subjects/University/UTM/Year_3/Winter_2024_Courses/CSC311/ML_Challenge/clean_dataset.csv"
     x_train, t_train, x_test, t_test = get_data(file_name)
 
 def softmax(z):
@@ -143,10 +144,7 @@ class MLPModel(object):
         Parameters:
             `alpha` - A number representing the learning rate
         """
-
-        print(self.W_bar[0].shape)
-        print(self.W_bar[1].shape)
-        for i in range(len(self.W)):
+        for i in range(len(self.W) - 1):
             self.W[i] = self.W[i] - alpha * self.W_bar[i]
             self.b[i] = self.b[i] - alpha * self.b_bar[i]
 
@@ -168,6 +166,32 @@ class MLPModel(object):
         self.b_bar = [None] * (len(self.W) - 1)
         self.h_bar = [None] * (len(self.W) - 1)
         self.m_bar = [None] * (len(self.W) - 1)
+
+    def predict(self, X):
+        """
+        Make predictions for the given input data.
+
+        Parameters:
+            `X` - A numpy array of shape (N, self.num_features)
+
+        Returns: A numpy array of predictions of shape (N, self.num_classes)
+        """
+        self.forward(X)
+        index = np.argmax(self.y)
+        return index
+    
+    def accuracy(self, X, t):
+        """
+        Compute the accuracy of the model given input data and target labels.
+        """
+        y = np.array([self.predict(x) for x in X])
+        print(y)
+        print(t)
+        z = np.argmax(t, axis=1)
+        print(z)
+        return np.sum(y == z) / t.shape[0]
+        
+        
 
 def do_forward_pass(model, X):
     """
@@ -215,21 +239,23 @@ def do_backward_pass(model, ts):
         `ts` - A numpy array of shape (N, model.num_classes)
     """
     model.z_bar = (model.y - ts) / model.N
+    print(model.y[0:10])
+    print(ts[0:10])
+    
+    model.W_bar[-1] = model.h[-2].T.dot(model.z_bar)
+    model.b_bar[-1] = np.sum(model.z_bar, axis=0)
 
-    model.W_bar[-1] = model.h[len(model.W) - 2].T @ model.z_bar
-    model.b_bar[len(model.W) - 2] = np.sum(model.z_bar, axis=0)
+    for i in range(len(model.W) - 2, 0, -1):
+        model.h_bar[i] = model.z_bar.dot(model.W[i + 1].T)
+        model.m_bar[i] = model.h_bar[i] * (model.h[i] > 0)
+        model.W_bar[i] = model.h[i - 1].T.dot(model.m_bar[i])
+        model.b_bar[i] = np.sum(model.m_bar[i], axis=0)
 
-    for i in range(len(model.W) - 1, 0, -1):
-        model.h_bar[i-1] = model.z_bar @ model.W[i].T
-        model.m_bar[i-1] = model.h_bar[i-1] * (model.m[i-1] > 0).astype(np.float64)
-        model.W_bar[i-1] = model.h[i-1].T @ model.m_bar[i-1]
-        model.b_bar[i-1] = np.sum(model.m_bar[i-1], axis=0)
-    # model.W2_bar = model.h.T @ model.z_bar
-    # model.b2_bar = np.sum(model.z_bar, axis=0)
-    # model.h_bar = model.z_bar @ model.W2.T
-    # model.m_bar = model.h_bar * (model.m>0).astype(np.float64)
-    # model.W1_bar = model.X.T @ model.m_bar
-    # model.b1_bar = np.sum(model.m_bar, axis=0)
+    # Handle the first layer separately
+    model.h_bar[0] = model.m_bar[1].dot(model.W[1].T)
+    model.m_bar[0] = model.h_bar[0] * (model.h[0] > 0)
+    model.W_bar[0] = model.X.T.dot(model.m_bar[0])
+    model.b_bar[0] = np.sum(model.m_bar[0], axis=0)
 
 def train_sgd(model, X_train, t_train,
               alpha=0.1, n_epochs=0, batch_size=100,
@@ -287,7 +313,15 @@ def train_sgd(model, X_train, t_train,
             model.update(alpha)
             niter += 1
 
+
+
 if __name__ == "__main__":
     gen_input_output()
-    model = MLPModel([(73, 100), (100, 4)])
+    model = MLPModel([(73, 500), (500, 20), (20, 4)])
+
     train_sgd(model, x_train, t_train.to_numpy().astype(np.int32), alpha=0.1, n_epochs=10, batch_size=100, X_valid=x_test, t_valid=t_test)
+
+
+    print(model.accuracy(x_test, t_test.to_numpy().astype(np.int32)))
+
+

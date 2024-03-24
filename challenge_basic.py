@@ -191,11 +191,12 @@ def get_data(file_name):
 
     #df = df.sample(frac=1, random_state=random_state)
 
+    df = df.sample(frac = 1)
+
     x = df.drop("Label", axis=1).values
     y = pd.get_dummies(df["Label"].values)
 
     n_train = 1200
-
     x_train = x[:n_train]
     y_train = y[:n_train]
 
