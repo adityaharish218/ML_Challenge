@@ -162,7 +162,8 @@ if __name__ == '__main__':
         start_model_testers(num_model_trainers)
     
     elif command == "stop":
-        stop_model_trainers()
+        if os.path.exists(PID_DIR):
+            stop_model_trainers()
         try:
             delete_directory(PID_DIR)
         except Exception as e:
