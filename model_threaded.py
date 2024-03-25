@@ -28,7 +28,7 @@ def process_permutations(thread_num, x_train, t_train, x_test, t_test, start_ind
     
     print("Thread", thread_num, "started")
     with open(output_file, "w") as f:
-        f.write("Results with max\n")
+        f.write(f'Results with hidden layer sizes between {start_index} and {end_index}:\n')
     
     for i in range(start_index, end_index):
         for perm in permutations(range(20, 300), i):
