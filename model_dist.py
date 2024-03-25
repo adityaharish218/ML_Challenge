@@ -32,7 +32,7 @@ if __name__ == "__main__":
     from itertools import permutations
 
 
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         print("Usage: python model_dist.py <start_num_layers> <end_num_layers> <min_hidden_units> <max_hidden_units> <input_file_name> <output_file_name>")
         sys.exit(1)
     
@@ -53,6 +53,8 @@ if __name__ == "__main__":
     with open(output_filename, "w") as f:
         f.write(f'Training models from {start_num_layers} to {end_num_layers} layers with hidden units from {min_hidden_units} to {max_hidden_units}\n')
     
+    max = 0 
+    max_perm = None
     for i in range(start_num_layers, end_num_layers+1):
         for perm in permutations(range(min_hidden_units, max_hidden_units), i):
             mlp = MLPClassifier(hidden_layer_sizes=perm, max_iter=3000)
