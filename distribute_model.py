@@ -114,8 +114,7 @@ def start_model_testers(num_model_trainers):
         output_file = f"{BASE_DIR}/output_{i}.txt"
         command = f"cd {BASE_DIR}; python3 model_dist.py {lst_num_hidden[i][0]} {lst_num_hidden[i][1]} 20 300 {input_file} {output_file}"
         run(command, stdout, stderr, False)
-        with open(pid_file, 'w') as f:
-            f.write(str(run(host, f"pgrep -U harisha1 -f 'python'").stdout.strip()))
+        run(f"pgrep -U harisha1 -f 'python' > {pid_file}")
 
 
 def stop_model_trainers():
