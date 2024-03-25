@@ -24,6 +24,7 @@ import sys
 import json
 import subprocess
 import time
+import shutil
 
 # The room in which lab pcs should be used for config generation.
 ROOM = 2020
@@ -72,6 +73,18 @@ def next_free_server():
 #     proc = subprocess.run(f"ssh {host} \"nohup sh -c '{command}' 1>{stdout} 2>{stderr} &\"",
 #                        shell=True, capture_output=True, text=True)
 #     return proc
+
+def delete_directory(directory):
+    try:
+        # Check if the directory exists
+        if os.path.exists(directory):
+            # Delete the directory and its contents
+            shutil.rmtree(directory)
+            print(f"Directory '{directory}' and its contents have been deleted successfully.")
+        else:
+            print(f"Directory '{directory}' does not exist.")
+    except Exception as e:
+        print(f"An error occurred while deleting the directory: {e}")
 
 def run(command, stdout="/dev/null", stderr="/dev/null", hangup=True):
     if not hangup:
