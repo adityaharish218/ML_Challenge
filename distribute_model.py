@@ -89,7 +89,7 @@ def delete_directory(directory):
 def run(host, command, stdout="/dev/null", stderr="/dev/null", hangup=True):
     if not hangup:
         print(f"Running {command} without hangup")
-        command = f"ssh {host} \"source /etc/profile; {command};"
+        command = f"ssh {host} \"source /etc/profile; nohup sh -c '{command}';"
     
     proc = subprocess.run(command, shell=True, capture_output=True, text=True)
 
@@ -140,7 +140,7 @@ def stop_model_trainers():
         for host in f:
             host = host.strip()
             print(f"Stopping model_trainer on {host}")
-            proc = subprocess.run(f"ssh {host}; pkill -f model_dist.py", shell=True, capture_output=True, text=True)
+            proc = subprocess.run(f"ssh {host}; nohup sh -c 'pkill -f model_dist.py'", shell=True, capture_output=True, text=True)
 
 
 if __name__ == '__main__':
