@@ -86,9 +86,9 @@ def delete_directory(directory):
     except Exception as e:
         print(f"An error occurred while deleting the directory: {e}")
 
-def run(command, stdout="/dev/null", stderr="/dev/null", hangup=True):
+def run(host, command, stdout="/dev/null", stderr="/dev/null", hangup=True):
     if not hangup:
-        command = f"nohup sh -c '{command}' 1>{stdout} 2>{stderr} &"
+        command = f"ssh {host} nohup sh -c '{command}' 1>{stdout} 2>{stderr} &"
     proc = subprocess.run(command, shell=True, capture_output=True, text=True)
 
     return proc
@@ -124,7 +124,7 @@ def start_model_testers(num_model_trainers):
         input_file = f"{BASE_DIR}/clean_dataset.csv"
         output_file = f"{BASE_DIR}/output_{i}.txt"
         command = f"cd {BASE_DIR}; python3 model_dist.py {lst_num_hidden[i][0]} {lst_num_hidden[i][1]} 20 300 {input_file} {output_file}"
-        run(command, stdout, stderr, False)
+        run(host, command, stdout, stderr, False)
         with open(hosts_file, "a+") as f:
             f.write(f"{host}\n")
 
