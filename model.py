@@ -1,7 +1,7 @@
 import random
 import numpy as np
 import pandas as pd
-from challenge_basic import get_data
+from challenge_basic import get_data, get_data2
 import sys
 
 x_train, t_train, x_test, t_test = None, None, None, None
@@ -20,7 +20,7 @@ def gen_input_output():
     """
     global x_train, t_train, x_test, t_test
     file_name = "/Users/adityaharish/Documents/Documents/Subjects/University/UTM/Year_3/Winter_2024_Courses/CSC311/ML_Challenge/clean_dataset.csv"
-    x_train, t_train, x_test, t_test = get_data(file_name)
+    x_train, t_train, x_test, t_test = get_data2(file_name)
 
 def softmax(z):
     """
@@ -316,12 +316,96 @@ def train_sgd(model, X_train, t_train,
 
 
 if __name__ == "__main__":
+    import sklearn
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.neural_network import MLPClassifier
+
+    # Create a logistic regression model with sklearn
     gen_input_output()
-    model = MLPModel([(73, 500), (500, 20), (20, 4)])
+    # model = MLPModel([(73, 500), (500, 20), (20, 4)])
 
-    train_sgd(model, x_train, t_train.to_numpy().astype(np.int32), alpha=0.1, n_epochs=10, batch_size=100, X_valid=x_test, t_valid=t_test)
+    # train_sgd(model, x_train, t_train.to_numpy().astype(np.int32), alpha=0.1, n_epochs=10, batch_size=100, X_valid=x_test, t_valid=t_test)
 
 
-    print(model.accuracy(x_test, t_test.to_numpy().astype(np.int32)))
+    # print(model.accuracy(x_test, t_test.to_numpy().astype(np.int32)))
+
+    # lr = LogisticRegression(max_iter=300)
+    # lr.fit(x_train, t_train)
+
+    # print(lr.score(x_train, t_train))
+    # print(lr.score(x_test, t_test))
+
+    # knn = KNeighborsClassifier(n_neighbors=11)
+
+    # knn.fit(x_train, t_train)
+    
+    # print(knn.score(x_train, t_train))
+    # print(knn.score(x_test, t_test))
+
+    # hidden_layers = [(1), (2), (3), (4), (5), (6), (7), (8), (9), (10)
+    #                  (1, 1), (2, 1), (3, 1) 
+    #                  (1, 2), ()
+                     
+                     
+    #                  (1, 1, 1), (1, 1, 2), ]
+
+    # for i in range(1, 11):
+    #     for j in range(2, 1001):
+    #         hiden_layers.append()
+
+        
+
+        
+    # make all permutations in pairs of x size, from 1 to 1000
+    lst = []
+    max = 0
+    max_perm = None
+    with open("nimish.txt", "w") as f:
+        f.write("Results with max\n")
+    
+    from itertools import permutations
+    for i in range(3, 6):
+        print("lodu idhar tak toh aaja")
+        for perm in permutations(range(20, 300), i):
+            lst.append(perm)
+            mlp = MLPClassifier(hidden_layer_sizes=perm, max_iter=3000)
+            mlp.fit(x_train, t_train)
+            score = mlp.score(x_test, t_test)
+            print("Training done with score: ", score)
+            if score > max:
+                max = score
+                max_perm = perm
+                print(f"Max score: {max} for {max_perm}")
+                with open("nimish.txt", "a") as f:
+                    f.write(f"Max score: {max} for {max_perm}\n")
+                
+
+        
+
+
+    # for i in range(1, 10):
+    #     mlp = MLPClassifier(hidden_layer_sizes=(i * 100, i * 10, i * 5, i * 4), max_iter=300)
+
+    #     mlp.fit(x_train, t_train)
+
+    #     print(mlp.score(x_train, t_train))
+
+        # print(mlp.score(x_test, t_test))
+    # mlp = MLPClassifier(hidden_layer_sizes=(1000, 100, 20 ), max_iter=300)
+
+    # mlp.fit(x_train, t_train)
+
+    # print(mlp.score(x_train, t_train))
+
+    # print(mlp.score(x_test, t_test))
+        
+
+
+
+
+
+
+
 
 
