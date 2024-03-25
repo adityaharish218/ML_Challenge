@@ -88,7 +88,7 @@ def delete_directory(directory):
 
 def run(host, command, stdout="/dev/null", stderr="/dev/null", hangup=True):
     if not hangup:
-        print("Running command without hangup")
+        print(f"Running {command} without hangup")
         command = f"ssh {host} \"source /etc/profile; {command};"
     
     proc = subprocess.run(command, shell=True, capture_output=True, text=True)
