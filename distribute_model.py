@@ -88,7 +88,7 @@ def delete_directory(directory):
 
 def run(host, command, stdout="/dev/null", stderr="/dev/null", hangup=True):
     if not hangup:
-        command = f"ssh {host} nohup sh -c '{command}' 1>{stdout} 2>{stderr} &"
+        command = f"ssh {host}; nohup sh -c '{command}' 1>{stdout} 2>{stderr} &"
     proc = subprocess.run(command, shell=True, capture_output=True, text=True)
 
     return proc
@@ -159,7 +159,7 @@ if __name__ == '__main__':
         if os.path.exists(HOST_FILE):
             stop_model_trainers()
         try:
-            os.rmfile(HOST_FILE)
+            os.remove(HOST_FILE)
         except Exception as e:
             print(f"An error occurred while deleting the file: {e}")
         try:
