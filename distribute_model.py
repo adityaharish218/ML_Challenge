@@ -39,7 +39,7 @@ STDOUT_DIR = 'stdout_model_trainer'
 # The directory to redirect the stderr to
 STDERR_DIR = 'stderr_model_trainer'
 # The directory to put the pids file in
-PID_DIR = 'pids_model_trainer'
+HOST_FILE = 'hosts.txt'
 
 
 
@@ -98,10 +98,8 @@ def start_model_testers(num_model_trainers):
     Start the model_trainers on the different lab machines. This generates a
     pids directry, and stdout and stderr directories.
     """
-    try:
-        os.mkdir(PID_DIR)
-    except FileExistsError:
-        print("ERROR: Pids directory still exists. Exiting.")
+    if os.path.exists(HOST_FILE):
+        print("ERROR: Hosts file already exists. Exiting.")
         sys.exit(1)
 
     try:
@@ -117,17 +115,18 @@ def start_model_testers(num_model_trainers):
         sys.exit(1)
 
     lst_num_hidden = [(2*i, 2 * (i + 1)) for i in range(1, num_model_trainers+1)]
+    hosts_file =f'{BASE_DIR}/hosts.txt'
     for i in range(num_model_trainers):
         host = next_free_server()
         print(f"Starting model_trainer on {host}")
         stdout = f"{BASE_DIR}/{STDOUT_DIR}/{host}.out"
         stderr = f"{BASE_DIR}/{STDERR_DIR}/{host}.err"
-        pid_file = f"{BASE_DIR}/{PID_DIR}/{host}.pid"
         input_file = f"{BASE_DIR}/clean_dataset.csv"
         output_file = f"{BASE_DIR}/output_{i}.txt"
         command = f"cd {BASE_DIR}; python3 model_dist.py {lst_num_hidden[i][0]} {lst_num_hidden[i][1]} 20 300 {input_file} {output_file}"
         run(command, stdout, stderr, False)
-        run(f"pgrep -U harisha1 -f 'python' > {pid_file}")
+        with open(hosts_file, "a+") as f:
+            f.write(f"{host}\n")
 
 
 def stop_model_trainers():
@@ -135,16 +134,11 @@ def stop_model_trainers():
     Stop all model_trainers that have pid files in the pids_model_tester directory and delete the
     pids_model_tester directory.
     """
-    for pidfile in os.listdir(PID_DIR):
-        host = pidfile.split(".")[0]
-        try: 
-            with open(PID_DIR + "/" + pidfile) as f:
-                pid = int(f.read())
-                subprocess.run(f"ssh {host} \"kill {pid}\"",
-                            shell=True, capture_output=True, text=True)
-                print(f"Killed PID {pid} on {host}")
-        except FileNotFoundError:
-            print(f"Pid file {pidfile} does not exist.")
+    with open(HOST_FILE, "r") as f:
+        for host in f:
+            host = host.strip()
+            print(f"Stopping model_trainer on {host}")
+            run(f"ssh {host} 'pkill -f model_dist.py'")
 
 
 if __name__ == '__main__':
@@ -162,13 +156,12 @@ if __name__ == '__main__':
         start_model_testers(num_model_trainers)
     
     elif command == "stop":
-        if os.path.exists(PID_DIR):
+        if os.path.exists(HOST_FILE):
             stop_model_trainers()
         try:
-            delete_directory(PID_DIR)
+            os.rmfile(HOST_FILE)
         except Exception as e:
-            print(f"An error occurred while deleting the directory: {e}")
-        
+            print(f"An error occurred while deleting the file: {e}")
         try:
             delete_directory(STDOUT_DIR)
         except Exception as e:
