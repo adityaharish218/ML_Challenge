@@ -163,9 +163,20 @@ if __name__ == '__main__':
     
     elif command == "stop":
         stop_model_trainers()
-        os.rmdir(PID_DIR)
-        os.rmdir(STDOUT_DIR)
-        os.rmdir(STDERR_DIR)
+        try:
+            delete_directory(PID_DIR)
+        except Exception as e:
+            print(f"An error occurred while deleting the directory: {e}")
+        
+        try:
+            delete_directory(STDOUT_DIR)
+        except Exception as e:
+            print(f"An error occurred while deleting the directory: {e}")
+       
+        try:
+            delete_directory(STDERR_DIR)
+        except Exception as e:
+            print(f"An error occurred while deleting the directory: {e}")
     
     else:
         print("Invalid command")
