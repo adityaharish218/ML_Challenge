@@ -66,8 +66,8 @@ if __name__ == "__main__":
     from itertools import product
 
 
-    if len(sys.argv) != 10:
-        print("Usage: python model_dist.py <start_num_layers> <end_num_layers> <min_hidden_units> <max_hidden_units> <step> <left_most_number_start> <left_most_number_stop> <input_file_name> <output_file_name>")
+    if len(sys.argv) != 11:
+        print("Usage: python model_dist.py <start_num_layers> <end_num_layers> <min_hidden_units> <max_hidden_units> <step> <left_most_number_start> <left_most_number_stop> <input_file_name> <max_output_file_name> <stdout_file_name>")
         sys.exit(1)
     
     try:
@@ -84,6 +84,7 @@ if __name__ == "__main__":
 
     input_filename = sys.argv[8]
     output_filename = sys.argv[9]
+    stdout_filename = sys.argv[10]
 
     gen_input_output()
 
@@ -97,11 +98,11 @@ if __name__ == "__main__":
             mlp = MLPClassifier(hidden_layer_sizes=perm, max_iter=3000)
             mlp.fit(x_train, t_train)
             score = mlp.score(x_test, t_test)
-            print(f"Training done with permutation {perm} and score: {score}")
+            with open(stdout_filename, "a") as f:
+                f.write(f"Score: {score} for {perm}\n")
             if score > max:
                 max = score
                 max_perm = perm
-                print(f"Max score: {max} for {max_perm}")
                 with open(output_filename, "a") as f:
                     f.write(f"Max score: {max} for {max_perm}\n")
 
