@@ -93,22 +93,18 @@ if __name__ == "__main__":
     max = 0 
     max_perm = None
     for i in range(start_num_layers, end_num_layers+1):
-        count = 0
         for perm in generate_valid_products(min_hidden_units, max_hidden_units, step, left_most_number_start, left_most_number_end, i):
-            print(perm)
-            count +=1
-            # mlp = MLPClassifier(hidden_layer_sizes=perm, max_iter=3000)
-            # mlp.fit(x_train, t_train)
-            # score = mlp.score(x_test, t_test)
-            # print(f"Training done with permutation {perm} and score: {score}")
-            # if score > max:
-            #     max = score
-            #     max_perm = perm
-            #     print(f"Max score: {max} for {max_perm}")
-            #     with open(output_filename, "a") as f:
-            #         f.write(f"Max score: {max} for {max_perm}\n")
+            mlp = MLPClassifier(hidden_layer_sizes=perm, max_iter=3000)
+            mlp.fit(x_train, t_train)
+            score = mlp.score(x_test, t_test)
+            print(f"Training done with permutation {perm} and score: {score}")
+            if score > max:
+                max = score
+                max_perm = perm
+                print(f"Max score: {max} for {max_perm}")
+                with open(output_filename, "a") as f:
+                    f.write(f"Max score: {max} for {max_perm}\n")
 
-        print(count)
 
 
 
