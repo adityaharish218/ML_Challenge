@@ -60,7 +60,7 @@ if __name__ == "__main__":
             mlp = MLPClassifier(hidden_layer_sizes=perm, max_iter=3000)
             mlp.fit(x_train, t_train)
             score = mlp.score(x_test, t_test)
-            print("Training done with score: ", score)
+            print(f"Training done with permutation {perm} and score: {score}")
             if score > max:
                 max = score
                 max_perm = perm
