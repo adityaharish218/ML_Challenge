@@ -40,6 +40,8 @@ def generate_valid_products(min_hidden_units, max_hidden_units, step, leftmost_n
     """ 
     valid_ranges_3 = ([5, 100], [5, 150], [5, 50])
     valid_ranges_4 = ([5, 100], [5, 200], [5, 150], [5, 50])
+    valid_range_1 =[1, 150]
+    valid_range_2 =([1, 150], [1, 50])
 
     valid_products = []
     if layer_size == 3:
@@ -50,6 +52,16 @@ def generate_valid_products(min_hidden_units, max_hidden_units, step, leftmost_n
         for perm in product(range(min_hidden_units, max_hidden_units + 1, step), repeat=layer_size):
             if all([valid_ranges_4[i][0] <= perm[i] <= valid_ranges_4[i][1] for i in range(layer_size)]) and perm[0] >= leftmost_number_start and perm[0] <= leftmost_number_end:
                 valid_products.append(perm)
+    elif layer_size == 1:
+        for perm in product(range(min_hidden_units, max_hidden_units + 1, step), repeat=layer_size):
+            if valid_range_1[0] <= perm[0] <= valid_range_1[1]:
+                valid_products.append(perm)
+    elif layer_size == 2:
+        for perm in product(range(min_hidden_units, max_hidden_units + 1, step), repeat=layer_size):
+            if all([valid_range_2[i][0] <= perm[i] <= valid_range_2[i][1] for i in range(layer_size)]) and perm[0] >= leftmost_number_start and perm[0] <= leftmost_number_end:
+                valid_products.append(perm)
+
+
 
     return valid_products
 
