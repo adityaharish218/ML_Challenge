@@ -4,7 +4,22 @@ import pandas as pd
 from challenge_basic import get_data, get_data2
 import sys
 
+import sklearn
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB, CategoricalNB
+from sklearn.exceptions import DataConversionWarning
+import warnings
+
+
+
+
 x_train, t_train, x_test, t_test = None, None, None, None
+
+def warn(*args, **kwargs): # To suppress warnings
+    pass
 
 
 def gen_input_output():
@@ -314,92 +329,140 @@ def train_sgd(model, X_train, t_train,
             niter += 1
 
 
-
-if __name__ == "__main__":
-    import sklearn
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.neighbors import KNeighborsClassifier
-    from sklearn.neural_network import MLPClassifier
+def run_logistic_regression():
+    """
+    Run logistic regression on the given dataset.
+    """
+    if any([x is None for x in [x_train, t_train, x_test, t_test]]):
+        gen_input_output()
 
     # Create a logistic regression model with sklearn
-    gen_input_output()
-    # model = MLPModel([(73, 500), (500, 20), (20, 4)])
+    print("Running Logistic Regression")
+    lr = LogisticRegression(verbose=0)
+    lr.fit(x_train, t_train)
 
-    # train_sgd(model, x_train, t_train.to_numpy().astype(np.int32), alpha=0.1, n_epochs=10, batch_size=100, X_valid=x_test, t_valid=t_test)
+    print(f"Training Score:  {lr.score(x_train, t_train)}")
+    print(f"Testing Score: {lr.score(x_test, t_test)}")
+
+    print("-------------------\n\n")
 
 
-    # print(model.accuracy(x_test, t_test.to_numpy().astype(np.int32)))
+def run_knn():
+    """
+    Run k-nearest neighbors on the given dataset. with different set of k values
+    """
+    if any([x is None for x in [x_train, t_train, x_test, t_test]]):
+        gen_input_output()
 
-    # lr = LogisticRegression(max_iter=300)
-    # lr.fit(x_train, t_train)
+    # Create a logistic regression model with sklearn
+    n = x_train.shape[0]
+    max_k = int(n ** 0.5)
 
-    # print(lr.score(x_train, t_train))
-    # print(lr.score(x_test, t_test))
+    print("Running KNN")
+    for i in range(1, max_k + 1, 2):
+        knn = KNeighborsClassifier(n_neighbors=i)
 
-    # knn = KNeighborsClassifier(n_neighbors=11)
+        knn.fit(x_train, t_train)
 
-    # knn.fit(x_train, t_train)
+        print("K = " + str(i) + ":")
+        print(f"Training Score: {knn.score(x_train, t_train)}")
+        print(f"Testing Score: {knn.score(x_test, t_test)}")
+        print("-------------------\n\n")
     
-    # print(knn.score(x_train, t_train))
-    # print(knn.score(x_test, t_test))
 
-    # hidden_layers = [(1), (2), (3), (4), (5), (6), (7), (8), (9), (10)
-    #                  (1, 1), (2, 1), (3, 1) 
-    #                  (1, 2), ()
-                     
-                     
-    #                  (1, 1, 1), (1, 1, 2), ]
 
-    # for i in range(1, 11):
-    #     for j in range(2, 1001):
-    #         hiden_layers.append()
+def run_decision_tree():
+    """
+    Run the decision tree on the given dataset with different set of max_depth values
+    """
+    if any([x is None for x in [x_train, t_train, x_test, t_test]]):
+        gen_input_output()
 
-        
 
-        
-    # make all permutations in pairs of x size, from 1 to 1000
-    lst = []
-    max = 0
-    max_perm = None
-    with open("nimish.txt", "w") as f:
-        f.write("Results with max\n")
+    # Create a logistic regression model with sklearn
     
-    from itertools import permutations
-    for i in range(3, 6):
-        print("lodu idhar tak toh aaja")
-        for perm in permutations(range(20, 300), i):
-            lst.append(perm)
-            mlp = MLPClassifier(hidden_layer_sizes=perm, max_iter=3000)
-            mlp.fit(x_train, t_train)
-            score = mlp.score(x_test, t_test)
-            print("Training done with score: ", score)
-            if score > max:
-                max = score
-                max_perm = perm
-                print(f"Max score: {max} for {max_perm}")
-                with open("nimish.txt", "a") as f:
-                    f.write(f"Max score: {max} for {max_perm}\n")
-                
+    print("Running Decision Tree")
 
-        
+    criterion = ["gini", "entropy", 'log_loss']
 
 
-    # for i in range(1, 10):
-    #     mlp = MLPClassifier(hidden_layer_sizes=(i * 100, i * 10, i * 5, i * 4), max_iter=300)
+    for crit in criterion:
+        print("Criterion = " + crit)
+        for i in range(1, 11): # 73 is the number of features we have
+            dt = DecisionTreeClassifier(max_depth=i, criterion=crit)
 
-    #     mlp.fit(x_train, t_train)
+            dt.fit(x_train, t_train)
 
-    #     print(mlp.score(x_train, t_train))
+            print("Max Depth = " + str(i) + ":")
 
-        # print(mlp.score(x_test, t_test))
-    # mlp = MLPClassifier(hidden_layer_sizes=(1000, 100, 20 ), max_iter=300)
+            print(f"Training Score: {dt.score(x_train, t_train)}")
+            print(f"Testing Score: {dt.score(x_test, t_test)}")
 
-    # mlp.fit(x_train, t_train)
+            print("-------------------\n\n")
+        print("---------------------------\n\n")
 
-    # print(mlp.score(x_train, t_train))
 
-    # print(mlp.score(x_test, t_test))
-        
+def run_naive_bayes():
+    """
+    Run Naive Bayes on the given dataset.
+    """
+
+    if any([x is None for x in [x_train, t_train, x_test, t_test]]):
+        gen_input_output()
+
+    print("Running Naive Bayes")
+
+    print("Gaussian Naive Bayes")
+    nb = GaussianNB()
+
+    nb.fit(x_train, t_train)
+
+    print(f"Training Score: {nb.score(x_train, t_train)}")
+
+    print(f"Testing Score: {nb.score(x_test, t_test)}")
+
+    print("-------------------\n\n")
+
+    print("Categorical Naive Bayes")
+
+
+
+
+
+    
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    warnings.warn = warn
+    if len(sys.argv) != 2:
+        print("Usage: python model.py <model_name>")
+        sys.exit(1)
+    if sys.argv[1] == "lr":
+        run_logistic_regression()
+    elif sys.argv[1] == "knn":
+        run_knn()
+    elif sys.argv[1] == "dt":
+        run_decision_tree()
+    elif sys.argv[1] == "nb":
+        run_naive_bayes()
+    elif sys.argv[1] == "all":
+        print("Running all models")
+        run_logistic_regression()
+        run_knn()
+        run_decision_tree()
+        run_naive_bayes()
+
+    else:
+        print("Invalid model name. Choose from lr, knn, dt, nb, all")
+        sys.exit(1)
+
+    
+            
 
 
 
